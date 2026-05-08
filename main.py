@@ -30,9 +30,14 @@ class VisualizerApp:
 
         self.clock = pygame.time.Clock()
 
-        self.renderer = Renderer(self.screen)
-
         self.data = generate_random_data()
+        
+        self.renderer = Renderer(
+            self.screen,
+            len(self.data)
+        )
+
+        
 
         self.sort_generator = BubbleSort.sort(self.data)
 

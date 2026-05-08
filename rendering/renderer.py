@@ -1,9 +1,14 @@
 import pygame
 
-from core.colors import BACKGROUND
-from core.colors import BAR_COLOR
-from core.colors import ACTIVE_COLOR
-from core.colors import SORTED_COLOR
+##conectar el HUD al renderer.
+from ui.hud import HUD
+
+from core.colors import (
+    BACKGROUND,
+    BAR_COLOR,
+    ACTIVE_COLOR,
+    SORTED_COLOR
+)
 
 from rendering.bar import Bar
 
@@ -15,18 +20,27 @@ from core.config import (
 
 class Renderer:
 
-    def __init__(self, screen):
+    def __init__(self, screen, array_size):
+
         self.screen = screen
+        
+        self.bars = []
+
+        self.hud = HUD()
+        
+        for index in range(array_size):
+
+            x = index * (BAR_WIDTH + 2)
+
+            bar = Bar(x, BAR_WIDTH)
+
+            self.bars.append(bar)
 
     def render(self, state):
 
         self.screen.fill(BACKGROUND)
 
         for index, value in enumerate(state.data):
-
-            x = index * (BAR_WIDTH + 2)
-
-            y = WINDOW_HEIGHT - value
 
             color = BAR_COLOR
 
@@ -36,14 +50,14 @@ class Renderer:
             elif index in state.sorted_indices:
                 color = SORTED_COLOR
 
-            bar = Bar(
-                x=x,
-                y=y,
-                width=BAR_WIDTH,
-                height=value,
-                color=color
+            self.bars[index].update(value, color)
+
+            self.bars[index].draw(
+                self.screen,
+                WINDOW_HEIGHT
             )
-
-            bar.draw(self.screen)
-
+        self.hud.draw(
+            self.screen,
+            state
+        )
         pygame.display.flip()

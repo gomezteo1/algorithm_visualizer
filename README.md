@@ -16,3 +16,7 @@ análisis y aprendizaje profundo de algoritmos.
 - Detección automática de algoritmos
 - Explicaciones educativas
 - Análisis de complejidad
+
+Consejos!
+##Cada que se teste borrar el cache en la raiz con 
+ for /d /r . %d in (__pycache__) do @if exist "%d" rd /s /q "%d"
